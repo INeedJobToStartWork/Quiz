@@ -1,0 +1,108 @@
+@import 'colors';
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    background-color: $background-color;
+
+    header{
+        background-color: $header-background-color;
+        position: absolute;
+        width: 100vw;
+        #timeLine{
+            width: 100%;
+            border-radius: 0 10px 10px 0;
+            background-color: darken($color: $background-color, $amount: 6);
+            height: 20px;
+        }
+    }
+    main{
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        #question{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            margin: 6rem;
+            animation-name: timeer;
+            animation-duration: 1s;
+            @keyframes timeer {
+                0%{opacity: 0;}
+                100%{opacity: 100%;}
+            }
+
+        }
+       
+        #answers{
+            @media screen and (min-width:1024px) {
+                display: grid;
+                grid-template-columns: 50% 50%; 
+                grid-template-rows: 1fr 1fr;
+                gap: 2rem;
+                grid-column: 2;
+                grid-row: 2;
+                width: 50%;
+            }
+            display: flex;
+            
+            button{all: unset;cursor: pointer;}
+            .option{
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              
+              
+                
+                height: 300px;
+                border-radius: 20px;
+                font-size: 2.2rem;
+                padding: 10px;
+
+                transition: 0.2s;
+
+                word-break: break-all;
+                box-sizing: border-box;
+
+                &:nth-of-type(1){
+                    $bgcolor:#FF6161;
+                    background-color: $bgcolor;
+                    &:hover{background-color: lighten($color: $bgcolor, $amount: 5);}
+                }
+                &:nth-of-type(2){
+                    $bgcolor:#00B96B;
+                    background-color: $bgcolor;
+                    &:hover{background-color: lighten($color: $bgcolor, $amount: 5);}
+                }
+                &:nth-of-type(3){
+                    
+                    $bgcolor:#ffb237;
+                    background-color: $bgcolor;
+                    &:hover{background-color: lighten($color: $bgcolor, $amount: 5);}
+                }
+                &:nth-of-type(4){
+                    $bgcolor:#4A3ED6;
+                    background-color: $bgcolor;
+                    &:hover{background-color: lighten($color: $bgcolor, $amount: 5);}
+                }
+                
+                animation-name: timeer2;
+                animation-duration: 1s;
+                @keyframes timeer2 {
+                    0%{opacity: 0;transform: translateY(100px);}
+                    50%{opacity: 100%;}
+                    100%{transform: translateY(00px);}
+                }
+            }
+        }
+    }
+}
