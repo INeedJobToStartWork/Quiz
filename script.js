@@ -55,12 +55,12 @@ function nextRound(){
     if(roundNumber == test.questions.length){return console.log("The End")}
     roundStart()
 }
-function questionWrite(etykieta){
-    return etykieta.querySelector("#question").textContent = test.questions[roundNumber].title
+function questionWrite(card){
+    return card.querySelector("#question").textContent = test.questions[roundNumber].title
 }
-function answersWrite(etykieta){
-    const odpowiedzi = [...etykieta.querySelectorAll(".option")];
-    odpowiedzi.forEach((item,index) =>{item.textContent = test.questions[roundNumber].answers[index]})
+function answersWrite(card){
+    const answerBtns = [...card.querySelectorAll(".option")];
+    answerBtns.forEach((item,index) =>{item.textContent = test.questions[roundNumber].answers[index]})
 }
 function updateMain(content){
     tempContainer.innerHTML = "";
