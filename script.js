@@ -37,13 +37,14 @@ function roundStart(){
     answersWrite(card);
     updateMain(card)
     restartTimer()
-    setTimeout(() => {timer(test.time,timeLine.offsetWidth)},1000)
+    setTimeout(()=>{timer(test.time,timeLine.offsetWidth)},1000)
     
     roundNumber++;
     
     let btnOption = document.querySelectorAll(".option");
     btnOption.forEach(item => {
         item.addEventListener("click",() => {
+            clearInterval(timerWorker);
             nextRound();
         })
     })
@@ -52,15 +53,16 @@ function roundStart(){
   
 
 function nextRound(){
+    clearInterval(timerWorker);
     if(roundNumber == test.questions.length){return console.log("The End")}
-    roundStart()
+    setTimeout(()=>{roundStart()},100)
 }
-function questionWrite(etykieta){
-    return etykieta.querySelector("#question").textContent = test.questions[roundNumber].title
+function questionWrite(card){
+    return card.querySelector("#question").textContent = test.questions[roundNumber].title
 }
-function answersWrite(etykieta){
-    const odpowiedzi = [...etykieta.querySelectorAll(".option")];
-    odpowiedzi.forEach((item,index) =>{item.textContent = test.questions[roundNumber].answers[index]})
+function answersWrite(card){
+    const answerBtns = [...card.querySelectorAll(".option")];
+    answerBtns.forEach((item,index) =>{item.textContent = test.questions[roundNumber].answers[index]})
 }
 function updateMain(content){
     tempContainer.innerHTML = "";
@@ -70,13 +72,12 @@ function restartTimer(){timeLine.style.width = "100%";}
 
 
 function timer(time,basicwidth) {
-    // toDelete = toDelete ?? Math.floor(basicwidth * duringtime);
-    duringtime = 1000/(time * 1000);
-    if(timeLine.offsetWidth < basicwidth * duringtime){timeLine.style.width = 0;return nextRound();}
-    if(timeLine.offsetWidth > 0){
-        timeLine.style.width = `${timeLine.getBoundingClientRect().width - (basicwidth * duringtime) }px`
-        return setTimeout(() => { timer(time,basicwidth) }, 1000);
-    }
+    timerWorker = setInterval(()=>{
+        duringtime = 10/(time * 1000);
+        if(timeLine.offsetWidth < basicwidth * duringtime){timeLine.style.width = 0;return nextRound();}
+        if(timeLine.offsetWidth > 0)
+            timeLine.style.width = `${timeLine.getBoundingClientRect().width - (basicwidth * duringtime) }px`
+    },10)
 }
 
 roundStart()
