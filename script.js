@@ -2,7 +2,6 @@ const roundTemplate = document.querySelector("[data-round-template]")
 const tempContainer = document.querySelector("main");
 const timeLine = document.getElementById("timeLine");
 // let toDelete;
-let timerStatus;
 let roundNumber = 0;
 
 class Quiz{
@@ -29,32 +28,35 @@ const test = new Quiz(
     new question("Question 4",["10","12","13","14"]),
     new question("Question 5",["10","12","13","14"]),
     new question("Question 6",["10","12","13","14"]),
+
 )
 
 function roundStart(){
     const card = roundTemplate.content.cloneNode(true)
-    timerStatus = true
     questionWrite(card);
     answersWrite(card);
     updateMain(card)
     restartTimer()
-    setTimeout(() => {timer(test.time,timeLine.offsetWidth)},1000)
-    
+    window.timerWorker = setTimeout(() => {
+        timer(test.time,timeLine.offsetWidth)
+    }, 1000);
     roundNumber++;
     
     let btnOption = document.querySelectorAll(".option");
     btnOption.forEach(item => {
         item.addEventListener("click",() => {
-            timerStatus = false;
-            setTimeout(()=>{nextRound()},500)
+            
+            clearTimeout( timerWorker);
+            nextRound();
         })
-    })    
+    })
+    
 }
   
 
 function nextRound(){
-    if(roundNumber == test.questions.length){return console.log("The End")}
-    roundStart()
+    if(roundNumber == test.questions.length){clearTimeout( timerWorker );return console.log("The End")}
+    setTimeout(()=>{roundStart()},100)
 }
 function questionWrite(card){
     return card.querySelector("#question").textContent = test.questions[roundNumber].title
@@ -71,14 +73,11 @@ function restartTimer(){timeLine.style.width = "100%";}
 
 
 function timer(time,basicwidth) {
-    // toDelete = toDelete ?? Math.floor(basicwidth * duringtime);
     duringtime = 10/(time * 1000);
-    if(timerStatus){
-        if(timeLine.offsetWidth < basicwidth * duringtime){timeLine.style.width = 0;timeStatus = false;return nextRound();}
-        if(timeLine.offsetWidth > 0){
-            timeLine.style.width = `${timeLine.getBoundingClientRect().width - (basicwidth * duringtime) }px`
-            return setTimeout(() => { timer(time,basicwidth) }, 10);
-        }
+    if(timeLine.offsetWidth < basicwidth * duringtime){timeLine.style.width = 0;return nextRound();}
+    if(timeLine.offsetWidth > 0){
+        timeLine.style.width = `${timeLine.getBoundingClientRect().width - (basicwidth * duringtime) }px`
+        return timerWorker = setTimeout(() => { timer(time,basicwidth) }, 10);
     }
 }
 
