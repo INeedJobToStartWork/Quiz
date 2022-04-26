@@ -37,16 +37,14 @@ function roundStart(){
     answersWrite(card);
     updateMain(card)
     restartTimer()
-    window.timerWorker = setTimeout(() => {
-        timer(test.time,timeLine.offsetWidth)
-    }, 1000);
+    setTimeout(()=>{timer(test.time,timeLine.offsetWidth)},1000)
+    
     roundNumber++;
     
     let btnOption = document.querySelectorAll(".option");
     btnOption.forEach(item => {
         item.addEventListener("click",() => {
-            
-            clearTimeout( timerWorker);
+            clearInterval(timerWorker);
             nextRound();
         })
     })
@@ -55,7 +53,8 @@ function roundStart(){
   
 
 function nextRound(){
-    if(roundNumber == test.questions.length){clearTimeout( timerWorker );return console.log("The End")}
+    clearInterval(timerWorker);
+    if(roundNumber == test.questions.length){return console.log("The End")}
     setTimeout(()=>{roundStart()},100)
 }
 function questionWrite(card){
@@ -73,12 +72,12 @@ function restartTimer(){timeLine.style.width = "100%";}
 
 
 function timer(time,basicwidth) {
-    duringtime = 10/(time * 1000);
-    if(timeLine.offsetWidth < basicwidth * duringtime){timeLine.style.width = 0;return nextRound();}
-    if(timeLine.offsetWidth > 0){
-        timeLine.style.width = `${timeLine.getBoundingClientRect().width - (basicwidth * duringtime) }px`
-        return timerWorker = setTimeout(() => { timer(time,basicwidth) }, 10);
-    }
+    timerWorker = setInterval(()=>{
+        duringtime = 10/(time * 1000);
+        if(timeLine.offsetWidth < basicwidth * duringtime){timeLine.style.width = 0;return nextRound();}
+        if(timeLine.offsetWidth > 0)
+            timeLine.style.width = `${timeLine.getBoundingClientRect().width - (basicwidth * duringtime) }px`
+    },10)
 }
 
 roundStart()
